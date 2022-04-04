@@ -31,7 +31,7 @@ always@(posedge clk)
         data_out_tmp[31:0]<= data;
     end
 
-always@(posedge clk)
+always@(negedge clk)
     begin
         ready_tmp<= ready;
     end

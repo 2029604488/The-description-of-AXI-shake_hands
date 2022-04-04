@@ -26,7 +26,7 @@ always@(posedge clk)
         valid_tmp[1]<= valid_tmp[0];
     end
 
-always@(posedge clk)
+always@(negedge clk)
     begin
         ready_tmp<= ready;
     end
