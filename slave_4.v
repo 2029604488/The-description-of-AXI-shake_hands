@@ -9,14 +9,14 @@ module slave_4(
     );
     reg  ready_tmp;
     reg [1:0]valid_tmp;
-    reg [95:0]data_out_tmp;
+    reg [63:0]data_out_tmp;
     wire valid_neg;
     wire valid_pos;
   
 initial 
     begin 
         data_out_tmp=0;
-        ready = 0;
+        ready = 1;
         valid_tmp = 0;
     end
 
@@ -34,25 +34,25 @@ always@(negedge clk)
 always@(posedge clk)
     begin
         data_out_tmp[31:0]<= data;
-        data_out_tmp[63:32]<=data_out_tmp[31:0]
+       // data_out_tmp[63:32]<=data_out_tmp[31:0]
     end
 
-
+assign ready_1=ready&ready_tmp;
 assign valid_neg = valid_tmp[1] & ~valid_tmp[0];
 assign valid_pos = ~valid_tmp[1] & valid_tmp[0];
 
 
 //握手,因为valid和ready都打了一拍，所以数据做了两级缓存
-assign  data_out=data_out_tmp[95:64];
+assign  data_out=data_out_tmp[63:32];
 always@(posedge clk)
     begin
-        if(valid_tmp[0] & ready_tmp)
+        if(valid_tmp[0] & ready_1)
             begin
-                data_out_tmp[95:64] <= data_out_tmp[63:32];
+                data_out_tmp[63:32] <= data_out_tmp[31:0];
             end
         else
             begin
-                data_out_tmp[95:64] <= 0;
+                data_out_tmp[63:32] <=  data_out_tmp[63:32];
             end
     end
 

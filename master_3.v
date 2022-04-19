@@ -39,15 +39,15 @@ always@(posedge clk)
 //持续发数据
 always@(posedge clk)
 begin
-    if(data_source)
+    if(data_source&ready)
         begin 
             valid <= 1;
             data_tmp <= data_source;
         end
     else
         begin
-            valid <= 0;
-            data_tmp <= 0;
+            valid <= 1;
+            data_tmp <= data_tmp;
         end
 end
 endmodule
